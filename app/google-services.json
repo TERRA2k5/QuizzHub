@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "926263435025",
+    "project_id": "quizzhub-63cdc",
+    "storage_bucket": "quizzhub-63cdc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:926263435025:android:98ef8075ae26ee418b76b0",
+        "android_client_info": {
+          "package_name": "com.example.quizzhub"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAaTlw1xjanj876pp5F-oJH82Ew67DaFws"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,12 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.QuizzHub" parent="@style/Theme.AppCompat.DayNight">
+        <!-- Customize your dark theme here. -->
+         <item name="colorPrimary">@color/dark_blue</item>
+    </style>
+
+<!--    <style name="dayNight">-->
+<!--        <item name="android:textColor" >@color/light_blue</item>-->
+<!--        <item name="background">@drawable/back</item>-->
+<!--    </style>-->
+</resources>
