@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/back"
-        tools:context=".HomeFragment">
+        tools:context=".mainFragments.HomeFragment">
 
 
         <ImageView
@@ -59,7 +59,9 @@
             android:id="@+id/btnGenerate"
             android:layout_width="121dp"
             android:layout_height="wrap_content"
+            android:background="@drawable/btn_bg"
             android:text="Generate"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="@+id/et_topic"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/et_topic"
@@ -68,21 +70,22 @@
         <Spinner
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:layout_marginStart="36dp"
+            android:layout_marginStart="40dp"
             android:background="@drawable/et_border"
+            android:clickable="false"
             app:layout_constraintBottom_toBottomOf="@+id/toggleButton"
             app:layout_constraintStart_toEndOf="@+id/toggleButton"
             app:layout_constraintTop_toTopOf="@+id/toggleButton"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.38" />
 
-        <ToggleButton
+        <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/toggleButton"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="40dp"
-            android:background="@drawable/toggle_selector"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="84dp"
+            android:layout_height="29dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="48dp"
+            android:text="Timer"
+            app:layout_constraintStart_toStartOf="@+id/et_topic"
             app:layout_constraintTop_toBottomOf="@+id/et_topic" />
 
 

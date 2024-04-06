@@ -7,25 +7,37 @@
         android:id="@+id/drawerLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        tools:openDrawer="start"
+        android:fitsSystemWindows="true"
         tools:context=".MainActivity">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:elevation="6dp"
+                android:background="@color/dark_blue"
+                android:layout_height="56dp"/>
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/fragmentContainerView"
+                android:name="androidx.navigation.fragment.NavHostFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:defaultNavHost="true"
+                app:navGraph="@navigation/nav" />
+        </LinearLayout>
 
         <com.google.android.material.navigation.NavigationView
-            android:id="@+id/navigation"
-            android:layout_width="wrap_content"
+            android:id="@+id/navView"
+            android:layout_width="275dp"
             android:layout_height="match_parent"
             android:layout_gravity="start"
             app:headerLayout="@layout/head"
             app:menu="@menu/side_menu" />
-
-
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragmentContainerView4"
-            android:name="androidx.navigation.fragment.NavHostFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:defaultNavHost="true"
-            app:navGraph="@navigation/nav" />
 
 
     </androidx.drawerlayout.widget.DrawerLayout>
