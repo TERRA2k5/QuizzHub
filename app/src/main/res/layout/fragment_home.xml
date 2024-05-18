@@ -23,32 +23,33 @@
             android:id="@+id/logo"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:layout_marginStart="28dp"
             android:src="@drawable/quizzhub_font"
-            app:layout_constraintBottom_toBottomOf="@+id/tvTitle"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView4"
             app:layout_constraintEnd_toStartOf="@+id/tvTitle"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tvTitle" />
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/imageView4"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
-            android:layout_marginEnd="28dp"
             android:text="@string/app_name"
             android:textColor="@color/white"
-            android:textSize="40dp"
+            android:textSize="30dp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/imageView4" />
+            app:layout_constraintBottom_toBottomOf="@+id/logo"
+            app:layout_constraintEnd_toStartOf="@+id/imageView4"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/logo"
+            app:layout_constraintTop_toTopOf="@+id/logo" />
 
         <EditText
             android:id="@+id/et_topic"
             android:layout_width="242dp"
             android:layout_height="50dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="92dp"
+            android:layout_marginTop="148dp"
             android:hint="Enter your Topic ...."
             android:isScrollContainer="true"
             android:paddingLeft="5dp"
@@ -68,22 +69,23 @@
             app:layout_constraintTop_toTopOf="@+id/et_topic" />
 
         <Spinner
+            android:id="@+id/spiner_timer"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:layout_marginStart="40dp"
-            android:background="@drawable/et_border"
+            android:layout_marginStart="52dp"
             android:clickable="false"
+            android:gravity="center"
             app:layout_constraintBottom_toBottomOf="@+id/toggleButton"
             app:layout_constraintStart_toEndOf="@+id/toggleButton"
             app:layout_constraintTop_toTopOf="@+id/toggleButton"
-            app:layout_constraintVertical_bias="0.38" />
+            app:layout_constraintVertical_bias="0.555" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/toggleButton"
-            android:layout_width="84dp"
-            android:layout_height="29dp"
+            android:layout_width="100dp"
+            android:layout_height="32dp"
             android:layout_marginStart="4dp"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="68dp"
             android:text="Timer"
             app:layout_constraintStart_toStartOf="@+id/et_topic"
             app:layout_constraintTop_toBottomOf="@+id/et_topic" />
