@@ -9,14 +9,12 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
-import com.example.quizzhub.Quiz
+import com.example.quizzhub.model.Quiz
 import com.example.quizzhub.R
 import com.example.quizzhub.databinding.FragmentHomeBinding
 import com.google.ai.client.generativeai.GenerativeModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.squareup.moshi.JsonAdapter
-import com.squareup.moshi.Moshi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -65,7 +63,7 @@ class HomeFragment : Fragment() {
                 view: View?,
                 position: Int,
                 id: Long
-            ) {
+            ){
                 val prompt = timer[position].toString()
                 when(prompt){
                     "5"-> time = 5
@@ -125,7 +123,6 @@ class HomeFragment : Fragment() {
 
                 Log.i("TAGY" , quiz.quiz.get(0).question.toString())
 
-
             }
         }
 
@@ -133,7 +130,7 @@ class HomeFragment : Fragment() {
     }
 
 
-    private fun parseQuizResponse(jsonResponse: String): Quiz{
+    private fun parseQuizResponse(jsonResponse: String): Quiz {
 
         val gson = Gson()
         val quizType = object:TypeToken<Quiz>(){}.type

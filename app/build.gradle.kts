@@ -2,6 +2,9 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.gms.google-services")
+
+
+    id("kotlin-parcelize")
 }
 
 android {
@@ -66,5 +69,11 @@ dependencies {
     annotationProcessor("com.squareup.moshi:moshi-kotlin-codegen:1.8.0")
 
     implementation ("com.google.code.gson:gson:2.10.1")
+
+    val room_version = "2.6.1"
+
+    implementation("androidx.room:room-runtime:$room_version")
+    annotationProcessor("androidx.room:room-compiler:$room_version")
+
 
 }

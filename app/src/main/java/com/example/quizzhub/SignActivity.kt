@@ -10,10 +10,4 @@ class SignActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign)
     }
-
-    override fun onPause() {
-        super.onPause()
-
-        finish()
-    }
 }
