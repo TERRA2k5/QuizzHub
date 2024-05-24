@@ -3,7 +3,6 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.gms.google-services")
 
-
     id("kotlin-parcelize")
 }
 
@@ -74,6 +73,8 @@ dependencies {
 
     implementation("androidx.room:room-runtime:$room_version")
     annotationProcessor("androidx.room:room-compiler:$room_version")
+
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
 
 }

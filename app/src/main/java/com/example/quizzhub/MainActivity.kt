@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
@@ -34,6 +35,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if(auth.currentUser != null){
             navView.menu.findItem(R.id.log).setTitle("LogOut")
             navView.menu.findItem(R.id.log).setIcon(R.drawable.baseline_logout_24)
+
+//            val display = findViewById<TextView>(R.id.tvDisplay)
+//            auth = Firebase.auth
+//            if (auth.currentUser?.displayName != null) {
+//                display.setText(auth.currentUser?.displayName.toString())
+//            }
         }
 
 
@@ -71,7 +78,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.home -> {
                 if(findNavController(R.id.fragmentContainerView).currentDestination?.id == R.id.bookmarkFragment) {
                     findNavController(R.id.fragmentContainerView).navigate(R.id.action_bookmarkFragment_to_homeFragment)
-
+                    drawerLayout.closeDrawer(GravityCompat.START)
                 }
             }
 

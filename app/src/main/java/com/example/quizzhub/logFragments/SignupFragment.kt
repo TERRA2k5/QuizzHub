@@ -16,6 +16,7 @@ import com.example.quizzhub.databinding.FragmentSignupBinding
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+import com.google.firebase.auth.userProfileChangeRequest
 
 
 class SignupFragment : Fragment() {
@@ -65,6 +66,9 @@ class SignupFragment : Fragment() {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "createUserWithEmail:success")
                     val user = auth.currentUser
+//                    userProfileChangeRequest {
+//                        displayName = binding.etName.text.toString()
+//                    }
                     startActivity(Intent(context , MainActivity::class.java))
                 } else {
                     // If sign in fails, display a message to the user.
