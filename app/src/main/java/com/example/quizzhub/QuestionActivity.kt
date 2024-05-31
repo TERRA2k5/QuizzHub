@@ -1,11 +1,14 @@
 package com.example.quizzhub
 
+import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
+import android.os.CountDownTimer
+import android.os.PersistableBundle
 import android.util.Log
+import android.view.View
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.postDelayed
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.example.quizzhub.databinding.ActivityQuestionBinding
@@ -13,13 +16,23 @@ import com.example.quizzhub.model.QuesViewModel
 import com.example.quizzhub.model.Quiz
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class QuestionActivity : AppCompatActivity() {
 
-    lateinit var model: QuesViewModel
+    private lateinit var model: QuesViewModel
     lateinit var binding: ActivityQuestionBinding
-    private var answers = arrayListOf(" "," "," "," "," "," "," "," "," "," ")
     private lateinit var quiz: Quiz
+    private lateinit var timer: CountDownTimer
+    override fun onBackPressed() {
+
+        finish()
+        super.onBackPressed()
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -27,14 +40,33 @@ class QuestionActivity : AppCompatActivity() {
 
         model = ViewModelProvider(this).get(QuesViewModel::class.java)
 
-        val getQuiz: Bundle? = intent.extras
-        val response = getQuiz?.get("quiz")
+        val getData: Bundle? = intent.extras
+        val response = getData?.get("quiz").toString()
 
+        // setting timer only on FIRST
+
+        if(model.getFirst() == 0){
+            model.noFirst()
+            model.setMinute(getData?.get("time").hashCode())
+        }
+
+        // timer off text
+        if(model.getMinute() == -1){
+            binding.tvSec.setText("OFF")
+            binding.tvTime.visibility = View.GONE
+            binding.tvMin.visibility = View.GONE
+        }
+
+
+        Log.d("Tagyy" , model.getMinute().toString())
+
+        // generating response
         quiz = parseQuizResponse(response.toString())
 
         binding.tvQuesNo.setText((model.getQuesNo()!! + 1).toString())
+        binding.btnPrev.isEnabled = false
 
-
+        //1st question
         binding.tvQues.setText(quiz.quiz.get(model.getQuesNo()!!).question.toString())
         binding.optA.setText(quiz.quiz.get(model.getQuesNo()!!).options.get(0).toString())
         binding.optB.setText(quiz.quiz.get(model.getQuesNo()!!).options.get(1).toString())
@@ -42,48 +74,80 @@ class QuestionActivity : AppCompatActivity() {
         binding.optD.setText(quiz.quiz.get(model.getQuesNo()!!).options.get(3).toString())
 
 
+        // setting timmer:
+        if(model.getMinute() >= 0){
+            runTimer()
+        }
+
+    }
+
+    private fun runTimer(){
+        val time : Long = 1000*(model.getMinute()*60L + model.getSecond())
+        timer = object : CountDownTimer( time, 1000){
+            override fun onTick(millisUntilFinished: Long) {
+                val sec: Int = (millisUntilFinished.toInt()/1000)%60
+                model.setSecond(sec)
+                val min: Int = (millisUntilFinished.toInt()/1000)/60
+                model.setMinute(min)
+                binding.tvSec.setText(sec.toString())
+                binding.tvMin.setText(min.toString())
+            }
+
+            override fun onFinish() {
+
+                // calculate score & show result
+
+                calculateScore()
+
+                val finalScore = model.getScore()
+                val intent = Intent(this@QuestionActivity , ResultActivity::class.java)
+                intent.putExtra("score" , finalScore)
+                intent.putExtra("minLeft", model.getMinute())
+                intent.putExtra("secLeft", model.getSecond())
+                startActivity(intent)
+                finish()
+                timer.cancel()
+            }
+
+        }
     }
 
     fun nextQ(quiz: Quiz){
-        model.goToNext()
-        binding.radioOptions.clearCheck()
-        Log.d("quesNo" ,model.quesNo.value.toString())
+        if(model.getQuesNo()!! == 9){
 
-        //getting answer
-        if(answers[model.getQuesNo()!!] == binding.optA.text.toString()){
-            binding.optA.isChecked = true
-        }
-        if(answers[model.getQuesNo()!!] == binding.optB.text.toString()){
-            binding.optB.isChecked = true
-        }
-        if(answers[model.getQuesNo()!!] == binding.optC.text.toString()){
-            binding.optC.isChecked = true
-        }
-        if(answers[model.getQuesNo()!!] == binding.optD.text.toString()){
-            binding.optD.isChecked = true
-        }
+            calculateScore()
 
+            val finalScore = model.getScore()
+            val intent = Intent(this , ResultActivity::class.java)
+            intent.putExtra("score" , finalScore)
+            intent.putExtra("minLeft", model.getMinute())
+            intent.putExtra("secLeft", model.getSecond())
+            startActivity(intent)
+            finish()
+            timer.cancel()
+        }
+        binding.btnPrev.isEnabled = true
 
         // setting answer
         if(binding.optA.isChecked){
-            answers[model.getQuesNo()!!] = binding.optA.text.toString()
+            model.updateAnswer(model.getQuesNo()!! , binding.optA.text.toString())
         }
         if(binding.optB.isChecked){
-            answers[model.getQuesNo()!!] = binding.optB.text.toString()
+            model.updateAnswer(model.getQuesNo()!! , binding.optB.text.toString())
         }
         if(binding.optC.isChecked){
-            answers[model.getQuesNo()!!] = binding.optC.text.toString()
+            model.updateAnswer(model.getQuesNo()!! , binding.optC.text.toString())
         }
         if(binding.optD.isChecked){
-            answers[model.getQuesNo()!!] = binding.optD.text.toString()
+            model.updateAnswer(model.getQuesNo()!! , binding.optD.text.toString())
         }
 
+        if(model.getQuesNo()!! == 9) return
 
-        // for correct
-//        if(answers[model.getQuesNo()!!] == quiz.quiz.get(quesNo).correctAnswer.toString()){
-//            model.increaseScore()
-//        }
-        Log.d("Score" ,answers[model.getQuesNo()!!].toString())
+        model.goToNext()
+        val quesNo: Int = model.getQuesNo()!!
+        if(quesNo == 9) binding.btnNext.setText("Submit")
+        binding.radioOptions.clearCheck()
 
         binding.tvQuesNo.setText((model.getQuesNo()!! + 1).toString())
 
@@ -94,55 +158,50 @@ class QuestionActivity : AppCompatActivity() {
         binding.optC.setText(quiz.quiz.get(model.getQuesNo()!!).options.get(2).toString())
         binding.optD.setText(quiz.quiz.get(model.getQuesNo()!!).options.get(3).toString())
 
-//        startActivity(Intent(this, QuestionActivity::class.java))
-//        finish()
+
+
+//        Log.d("quesNo" ,model.quesNo.value.toString())
+
+        //getting answer
+        if(model.getAnswer(quesNo) == binding.optA.text.toString()){
+            binding.radioOptions.check(binding.optA.id)
+        }
+        if(model.getAnswer(quesNo) == binding.optB.text.toString()){
+            binding.radioOptions.check(binding.optB.id)
+        }
+        if(model.getAnswer(quesNo) == binding.optC.text.toString()){
+            binding.radioOptions.check(binding.optC.id)
+        }
+        if(model.getAnswer(quesNo) == binding.optD.text.toString()){
+            binding.radioOptions.check(binding.optD.id)
+        }
 
     }
 
     fun prevQ(quiz: Quiz){
-        model.goToPrev()
-        binding.radioOptions.clearCheck()
-        Log.d("quesNo" ,model.quesNo.value.toString())
 
-        //getting answer
-        if(answers[model.getQuesNo()!!] == binding.optA.text.toString()){
-            binding.optA.isChecked = true
-        }
-        if(answers[model.getQuesNo()!!] == binding.optB.text.toString()){
-            binding.optB.isChecked = true
-        }
-        if(answers[model.getQuesNo()!!] == binding.optC.text.toString()){
-            binding.optC.isChecked = true
-        }
-        if(answers[model.getQuesNo()!!] == binding.optD.text.toString()){
-            binding.optD.isChecked = true
-        }
-
-
-        //setting answer
+        // setting answer
         if(binding.optA.isChecked){
-            answers[model.getQuesNo()!!] = binding.optA.text.toString()
+            model.updateAnswer(model.getQuesNo()!! , binding.optA.text.toString())
         }
         if(binding.optB.isChecked){
-            answers[model.getQuesNo()!!] = binding.optB.text.toString()
+            model.updateAnswer(model.getQuesNo()!! , binding.optB.text.toString())
         }
         if(binding.optC.isChecked){
-            answers[model.getQuesNo()!!] = binding.optC.text.toString()
+            model.updateAnswer(model.getQuesNo()!! , binding.optC.text.toString())
         }
         if(binding.optD.isChecked){
-            answers[model.getQuesNo()!!] = binding.optD.text.toString()
+            model.updateAnswer(model.getQuesNo()!! , binding.optD.text.toString())
         }
 
+        model.goToPrev()
 
-        // for correct
+        val quesNo :Int = model.getQuesNo()!!
+        if(quesNo == 0) binding.btnPrev.isEnabled = false
+        binding.btnNext.setText("Next")
+//        Log.d("quesNo" ,quesNo.toString())
 
-//        if(answered == quiz.quiz.get(quesNo).correctAnswer.toString()){
-//            model.increaseScore()
-//        }
-//        Log.d("Score" ,model.score.value.toString())
-
-        Log.d("Score" ,answers[model.getQuesNo()!!].toString())
-
+        binding.radioOptions.clearCheck()
 
         binding.tvQuesNo.setText((model.getQuesNo()!! + 1).toString())
 
@@ -153,9 +212,21 @@ class QuestionActivity : AppCompatActivity() {
         binding.optC.setText(quiz.quiz.get(model.getQuesNo()!!).options.get(2).toString())
         binding.optD.setText(quiz.quiz.get(model.getQuesNo()!!).options.get(3).toString())
 
-//        startActivity(Intent(this, QuestionActivity::class.java))
-//        finish()
 
+        //getting answer
+        if(model.getAnswer(quesNo) == binding.optA.text.toString()){
+//            Toast.makeText(this, "toaastttt", Toast.LENGTH_SHORT).show()
+            binding.radioOptions.check(binding.optA.id)
+        }
+        if(model.getAnswer(quesNo) == binding.optB.text.toString()){
+            binding.radioOptions.check(binding.optB.id)
+        }
+        if(model.getAnswer(quesNo) == binding.optC.text.toString()){
+            binding.radioOptions.check(binding.optC.id)
+        }
+        if(model.getAnswer(quesNo) == binding.optD.text.toString()){
+            binding.radioOptions.check(binding.optD.id)
+        }
 
     }
 
@@ -165,6 +236,50 @@ class QuestionActivity : AppCompatActivity() {
         val quizType = object: TypeToken<Quiz>(){}.type
 
         return gson.fromJson(jsonResponse , quizType)
+    }
+
+    fun calculateScore(){
+
+        if(model.getAnswer(0) == quiz.quiz.get(0).correctAnswer){
+            model.increaseScore()
+            model.updateAnswer(0, "1")
+        }
+        if(model.getAnswer(1) == quiz.quiz.get(1).correctAnswer){
+            model.increaseScore()
+            model.updateAnswer(1, "1")
+        }
+        if(model.getAnswer(2) == quiz.quiz.get(2).correctAnswer){
+            model.increaseScore()
+            model.updateAnswer(2, "1")
+        }
+        if(model.getAnswer(3) == quiz.quiz.get(3).correctAnswer){
+            model.increaseScore()
+            model.updateAnswer(3, "1")
+        }
+        if(model.getAnswer(4) == quiz.quiz.get(4).correctAnswer){
+            model.increaseScore()
+            model.updateAnswer(4, "1")
+        }
+        if(model.getAnswer(5) == quiz.quiz.get(5).correctAnswer){
+            model.increaseScore()
+            model.updateAnswer(5, "1")
+        }
+        if(model.getAnswer(6) == quiz.quiz.get(6).correctAnswer){
+            model.increaseScore()
+            model.updateAnswer(6, "1")
+        }
+        if(model.getAnswer(7) == quiz.quiz.get(7).correctAnswer){
+            model.increaseScore()
+            model.updateAnswer(7, "1")
+        }
+        if(model.getAnswer(8) == quiz.quiz.get(8).correctAnswer){
+            model.increaseScore()
+            model.updateAnswer(8, "1")
+        }
+        if(model.getAnswer(9) == quiz.quiz.get(9).correctAnswer){
+            model.increaseScore()
+            model.updateAnswer(9, "1")
+        }
     }
 
     override fun onStart() {
@@ -178,6 +293,14 @@ class QuestionActivity : AppCompatActivity() {
             prevQ(quiz)
         }
 
+        if(model.getMinute() >= 0){
+            timer.start()
+        }
+
+        binding.btnClear.setOnClickListener {
+            model.updateAnswer(model.getQuesNo()!! , " ")
+            binding.radioOptions.clearCheck()
+        }
 
     }
 }

@@ -17,6 +17,8 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.google.firebase.auth.userProfileChangeRequest
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 
 
 class SignupFragment : Fragment() {
@@ -29,26 +31,34 @@ class SignupFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_signup, container , false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_signup, container, false)
 
         binding.buttonUp.setOnClickListener {
             val email = binding.etEmail.text.toString()
             val password = binding.etPassword.text.toString()
             val conPassword = binding.etConPassword.text.toString()
 
-            if(password == conPassword){
-                if(password == ""){
-                    binding.passbox.error = "Required"
-                }
-                if (email == ""){
-                    binding.emailbox.error = "Required"
-                }
-                if(email != "" && password != ""){
-                    newUser(email , password)
+            if (emailValidator(email)) {
+                if (password == conPassword) {
+                    if (password == "") {
+                        binding.passbox.error = "Required"
+                    }
+                    if (email == "") {
+                        binding.emailbox.error = "Required"
+                    }
+                    if (email != "" && password != "") {
+                        if (password.length >= 8) {
+                            newUser(email, password)
+                        } else {
+                            binding.passbox.error = "Minimum 8 character"
+                        }
+                    }
+                } else {
+                    binding.passbox2.error = "Does not match."
                 }
             }
             else{
-                binding.passbox2.error = "Does not match."
+                binding.emailbox.error = "Enter valid email ID"
             }
         }
 
@@ -57,7 +67,7 @@ class SignupFragment : Fragment() {
     }
 
 
-    private fun newUser(email: String , password: String){
+    private fun newUser(email: String, password: String) {
 
         auth = Firebase.auth
         auth.createUserWithEmailAndPassword(email, password)
@@ -69,7 +79,7 @@ class SignupFragment : Fragment() {
 //                    userProfileChangeRequest {
 //                        displayName = binding.etName.text.toString()
 //                    }
-                    startActivity(Intent(context , MainActivity::class.java))
+                    startActivity(Intent(context, MainActivity::class.java))
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)
@@ -80,6 +90,17 @@ class SignupFragment : Fragment() {
                     ).show()
                 }
             }
+    }
+
+
+    private fun emailValidator(email: String): Boolean {
+        val pattern: Pattern
+        val matcher: Matcher
+        val EMAIL_PATTERN: String =
+            "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+        pattern = Pattern.compile(EMAIL_PATTERN)
+        matcher = pattern.matcher(email)
+        return matcher.matches()
     }
 
 }

@@ -11,11 +11,10 @@
 
 
     <string-array name="timer">
+        <item>2</item>
         <item>5</item>
         <item>10</item>
         <item>15</item>
         <item>30</item>
-        <item>45</item>
-        <item>60</item>
     </string-array>
 </resources>

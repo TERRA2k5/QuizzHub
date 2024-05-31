@@ -14,6 +14,7 @@
         tools:targetApi="31">
         <activity
             android:name=".ResultActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".QuestionActivity"
@@ -29,9 +30,11 @@
         </activity>
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".SignActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
     </application>
 

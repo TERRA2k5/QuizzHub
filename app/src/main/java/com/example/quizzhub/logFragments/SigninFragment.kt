@@ -24,6 +24,8 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 
 class SigninFragment : Fragment() {
 
@@ -36,7 +38,7 @@ class SigninFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
 
-        binding = DataBindingUtil.inflate(inflater , R.layout.fragment_signin, container,false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_signin, container, false)
 
         auth = Firebase.auth
 
@@ -48,44 +50,67 @@ class SigninFragment : Fragment() {
             findNavController().navigate(R.id.action_signinFragment_to_forgetFragment)
         }
 
-        binding.btnIn.setOnClickListener{
+        binding.btnIn.setOnClickListener {
             val email = binding.etEmailIn.text.toString()
             val password = binding.etPasswordIn.text.toString()
 
-            if(email == ""){
-                binding.emailbox.error = "Required"
+            if(emailValidator(email)){
+                if (email == "") {
+                    binding.emailbox.error = "Required"
+                }
+                if (password == "") {
+                    binding.passbox.error = "Required"
+                }
+                if (email != "" && password != "") {
+                    signInPassEmail(email , password)
+                }
             }
-            if(password == ""){
-                binding.passbox.error = "Required"
-            }
-            if(email != "" && password != "") {
-                auth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            // Sign in success, update UI with the signed-in user's information
-                            val user = auth.currentUser
-                            Toast.makeText(context, "Logged in as ${user?.displayName.toString()} ", Toast.LENGTH_SHORT).show()
-                            startActivity(Intent(context, MainActivity::class.java))
-                            activity?.finish()
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithEmail:failure", task.exception)
-                            Toast.makeText(
-                                context,
-                                "Authentication failed.",
-                                Toast.LENGTH_SHORT,
-                            ).show()
-                        }
-                    }
+            else {
+                binding.emailbox.error = "Enter valid email ID"
             }
 
         }
 
-        binding.btnGoogle.setOnClickListener{
+        binding.btnGoogle.setOnClickListener {
             signIn()
         }
 
         return binding.root
+    }
+
+    private fun emailValidator(email: String): Boolean {
+        val pattern: Pattern
+        val matcher: Matcher
+        val EMAIL_PATTERN: String =
+            "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+        pattern = Pattern.compile(EMAIL_PATTERN)
+        matcher = pattern.matcher(email)
+        return matcher.matches()
+    }
+
+    private fun signInPassEmail(email: String, password: String) {
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    val user = auth.currentUser
+                    Toast.makeText(
+                        context,
+                        "Logged in as ${user?.displayName.toString()} ",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    startActivity(Intent(context, MainActivity::class.java))
+                    activity?.finish()
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w(TAG, "signInWithEmail:failure", task.exception)
+                    Toast.makeText(
+                        context,
+                        "Authentication failed.",
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                }
+            }
     }
 
 
@@ -109,7 +134,8 @@ class SigninFragment : Fragment() {
                 val account = task.getResult(ApiException::class.java)
                 firebaseAuthWithGoogle(account.idToken!!)
             } catch (e: ApiException) {
-                Toast.makeText(context, "Google sign in failed: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Google sign in failed: ${e.message}", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
     }
@@ -120,7 +146,11 @@ class SigninFragment : Fragment() {
             .addOnCompleteListener() { task ->
                 if (task.isSuccessful) {
                     val user = auth.currentUser
-                    Toast.makeText(context, "Signed in as ${user?.displayName.toString()}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context,
+                        "Signed in as ${user?.displayName.toString()}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     startActivity(Intent(context, MainActivity::class.java))
                     activity?.finish()
                 } else {
