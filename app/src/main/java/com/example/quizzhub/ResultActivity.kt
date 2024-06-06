@@ -19,6 +19,8 @@ import com.github.mikephil.charting.data.PieEntry
 class ResultActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityResultBinding
+    private lateinit var response: String
+    private var answers: ArrayList<String>? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -30,6 +32,8 @@ class ResultActivity : AppCompatActivity() {
         val score: Int = getData?.get("score").hashCode()
         val minLeft: Int = getData?.get("minLeft").hashCode()
         val secLeft: Int = getData?.get("secLeft").hashCode()
+        answers = getData?.getStringArrayList("answers")
+        response = getData?.get("response").toString()
 
         //setting time left
         if(minLeft == -1){
@@ -82,6 +86,13 @@ class ResultActivity : AppCompatActivity() {
             finishAffinity()
             startActivity(Intent(this , MainActivity::class.java))
             finish()
+        }
+
+        binding.btnAnalyse.setOnClickListener {
+            val intent = Intent(this , AnalyseActivity::class.java)
+            intent.putExtra("response" , response)
+            intent.putExtra("answers", answers)
+            startActivity(intent)
         }
     }
 }

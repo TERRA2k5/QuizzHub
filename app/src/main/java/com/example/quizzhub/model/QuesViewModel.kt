@@ -8,10 +8,13 @@ open class QuesViewModel: ViewModel() {
     private var quesNo = MutableLiveData<Int>().apply { value = 0 }
     private var first = MutableLiveData<Int>().apply { value = 0 }
     private var score = MutableLiveData<Int>().apply { value = 0 }
-    private var answers = arrayListOf(" "," "," "," "," "," "," "," "," "," ")
+    private var answers = arrayListOf("Not Answered","Not Answered","Not Answered","Not Answered","Not Answered","Not Answered","Not Answered","Not Answered","Not Answered","Not Answered")
     private var minute = MutableLiveData<Int>().apply { value = 0 }
     private var second = MutableLiveData<Int>().apply { value = 0 }
 
+    fun getAllAns(): ArrayList<String>{
+        return answers
+    }
 
     fun noFirst(){
         first.value = first.value?.plus(1)

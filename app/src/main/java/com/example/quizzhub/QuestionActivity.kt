@@ -28,6 +28,7 @@ class QuestionActivity : AppCompatActivity() {
     lateinit var binding: ActivityQuestionBinding
     private lateinit var quiz: Quiz
     private lateinit var timer: CountDownTimer
+    private lateinit var response: String
     override fun onBackPressed() {
 
         finish()
@@ -41,7 +42,7 @@ class QuestionActivity : AppCompatActivity() {
         model = ViewModelProvider(this).get(QuesViewModel::class.java)
 
         val getData: Bundle? = intent.extras
-        val response = getData?.get("quiz").toString()
+        response = getData?.get("quiz").toString()
 
         // setting timer only on FIRST
 
@@ -104,9 +105,11 @@ class QuestionActivity : AppCompatActivity() {
                 intent.putExtra("score" , finalScore)
                 intent.putExtra("minLeft", model.getMinute())
                 intent.putExtra("secLeft", model.getSecond())
+                intent.putExtra("response" , response)
+                intent.putExtra("answers", model.getAllAns())
                 startActivity(intent)
                 finish()
-                timer.cancel()
+                if(model.getMinute() >= 0) timer.cancel()
             }
 
         }
@@ -122,9 +125,11 @@ class QuestionActivity : AppCompatActivity() {
             intent.putExtra("score" , finalScore)
             intent.putExtra("minLeft", model.getMinute())
             intent.putExtra("secLeft", model.getSecond())
+            intent.putExtra("response" , response)
+            intent.putExtra("answers", model.getAllAns())
             startActivity(intent)
             finish()
-            timer.cancel()
+            if(model.getMinute() >= 0) timer.cancel()
         }
         binding.btnPrev.isEnabled = true
 
@@ -298,7 +303,7 @@ class QuestionActivity : AppCompatActivity() {
         }
 
         binding.btnClear.setOnClickListener {
-            model.updateAnswer(model.getQuesNo()!! , " ")
+            model.updateAnswer(model.getQuesNo()!! , "Not Answered")
             binding.radioOptions.clearCheck()
         }
 

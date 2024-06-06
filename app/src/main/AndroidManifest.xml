@@ -13,9 +13,15 @@
         android:theme="@style/Theme.QuizzHub"
         tools:targetApi="31">
         <activity
-            android:name=".ResultActivity"
-            android:screenOrientation="portrait"
+            android:name=".DetailActivity"
             android:exported="false" />
+        <activity
+            android:name=".AnalyseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ResultActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".QuestionActivity"
             android:exported="false" />
@@ -30,12 +36,12 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="portrait"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".SignActivity"
-            android:screenOrientation="portrait"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
