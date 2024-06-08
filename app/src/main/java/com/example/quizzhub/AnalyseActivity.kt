@@ -2,15 +2,14 @@ package com.example.quizzhub
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.quizzhub.adapter.AnalysisAdapter
 import com.example.quizzhub.databinding.ActivityAnalyseBinding
 import com.example.quizzhub.model.QuesViewModel
 import com.example.quizzhub.model.Quiz
@@ -88,6 +87,7 @@ class AnalyseActivity : AppCompatActivity() {
                     intent.putExtra("correct", quiz.quiz.get(position).correctAnswer)
                     intent.putExtra("answer", answers[position])
                     intent.putExtra("response",response)
+                    intent.putExtra("path","analyse")
                     intent.putExtra("number",(position+1).toString())
                     startActivity(intent)
                 }

@@ -1,15 +1,12 @@
-package com.example.quizzhub
+package com.example.quizzhub.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
-import androidx.core.graphics.drawable.toDrawable
 import androidx.recyclerview.widget.RecyclerView
-import com.example.quizzhub.model.Question
+import com.example.quizzhub.R
 import com.example.quizzhub.model.RecyclerModel
 
 

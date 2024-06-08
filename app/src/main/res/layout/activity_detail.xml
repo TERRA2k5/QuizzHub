@@ -15,7 +15,8 @@
             android:id="@+id/checkbox"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:button="@drawable/bookmark_icon"
+            android:button="@null"
+            android:background="@drawable/bookmark_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tvQues" />
 

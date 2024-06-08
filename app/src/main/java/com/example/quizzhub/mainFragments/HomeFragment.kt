@@ -110,6 +110,7 @@ class HomeFragment : Fragment() {
                 i.putExtra("quiz", response2)
                 i.putExtra("time", time)
                 startActivity(i)
+                activity?.finish()
             }
 
         }

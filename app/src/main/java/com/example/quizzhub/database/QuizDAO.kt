@@ -6,16 +6,17 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.quizzhub.model.Quiz
+import com.example.quizzhub.model.SavedQuestion
 
 @Dao
 interface QuizDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun saveQuestion(quiz: Quiz)
+    suspend fun insert(quiz: SavedQuestion)
 
     @Delete
-    suspend fun deleteQuestion(quiz: Quiz)
+    suspend fun delete(quiz: SavedQuestion)
 
-    @Query("SELECT * FROM quiz")
-    suspend fun getQuestion(): LiveData<List<Quiz>>
+    @Query("SELECT * FROM saved ORDER BY id ASC")
+    fun getAllBookmarks(): LiveData<List<SavedQuestion>>
+
 }

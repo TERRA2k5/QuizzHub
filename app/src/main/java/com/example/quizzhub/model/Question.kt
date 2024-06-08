@@ -4,7 +4,6 @@ import android.os.Parcelable
 import androidx.room.Entity
 import kotlinx.parcelize.Parcelize
 
-@Entity(tableName = "quiz")
 @Parcelize
 data class Question(
     val options: List<String>,

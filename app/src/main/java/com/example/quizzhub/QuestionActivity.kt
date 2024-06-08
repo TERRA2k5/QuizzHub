@@ -31,6 +31,8 @@ class QuestionActivity : AppCompatActivity() {
     private lateinit var response: String
     override fun onBackPressed() {
 
+        if(model.getMinute() >= 0) timer.cancel()
+        startActivity(Intent(this, MainActivity::class.java))
         finish()
         super.onBackPressed()
     }
@@ -39,6 +41,7 @@ class QuestionActivity : AppCompatActivity() {
         enableEdgeToEdge()
         binding = DataBindingUtil.setContentView(this , R.layout.activity_question)
 
+//        Toast.makeText(this, "create", Toast.LENGTH_SHORT).show()
         model = ViewModelProvider(this).get(QuesViewModel::class.java)
 
         val getData: Bundle? = intent.extras
@@ -62,22 +65,28 @@ class QuestionActivity : AppCompatActivity() {
         Log.d("Tagyy" , model.getMinute().toString())
 
         // generating response
-        quiz = parseQuizResponse(response.toString())
+        try {
+            quiz = parseQuizResponse(response.toString())
+            binding.tvQuesNo.setText((model.getQuesNo()!! + 1).toString())
+            binding.btnPrev.isEnabled = false
 
-        binding.tvQuesNo.setText((model.getQuesNo()!! + 1).toString())
-        binding.btnPrev.isEnabled = false
-
-        //1st question
-        binding.tvQues.setText(quiz.quiz.get(model.getQuesNo()!!).question.toString())
-        binding.optA.setText(quiz.quiz.get(model.getQuesNo()!!).options.get(0).toString())
-        binding.optB.setText(quiz.quiz.get(model.getQuesNo()!!).options.get(1).toString())
-        binding.optC.setText(quiz.quiz.get(model.getQuesNo()!!).options.get(2).toString())
-        binding.optD.setText(quiz.quiz.get(model.getQuesNo()!!).options.get(3).toString())
+            //1st question
+            binding.tvQues.setText(quiz.quiz.get(model.getQuesNo()!!).question.toString())
+            binding.optA.setText(quiz.quiz.get(model.getQuesNo()!!).options.get(0).toString())
+            binding.optB.setText(quiz.quiz.get(model.getQuesNo()!!).options.get(1).toString())
+            binding.optC.setText(quiz.quiz.get(model.getQuesNo()!!).options.get(2).toString())
+            binding.optD.setText(quiz.quiz.get(model.getQuesNo()!!).options.get(3).toString())
 
 
-        // setting timmer:
-        if(model.getMinute() >= 0){
-            runTimer()
+            // setting timmer:
+            if(model.getMinute() >= 0){
+                runTimer()
+                timer.start()
+            }
+        }catch (e: Exception){
+            Toast.makeText(this, "Something went wrong.\nTry Again.", Toast.LENGTH_SHORT).show()
+            finishAffinity()
+            startActivity(Intent(this, MainActivity::class.java))
         }
 
     }
@@ -90,11 +99,30 @@ class QuestionActivity : AppCompatActivity() {
                 model.setSecond(sec)
                 val min: Int = (millisUntilFinished.toInt()/1000)/60
                 model.setMinute(min)
-                binding.tvSec.setText(sec.toString())
-                binding.tvMin.setText(min.toString())
+
+                if(sec >= 10) binding.tvSec.setText(sec.toString())
+                else binding.tvSec.setText("0$sec")
+
+                if(min >= 10) binding.tvMin.setText(min.toString())
+                else binding.tvMin.setText("0$min")
             }
 
             override fun onFinish() {
+
+                //setting up last select option
+
+                if(binding.optA.isChecked){
+                    model.updateAnswer(model.getQuesNo()!! , binding.optA.text.toString())
+                }
+                if(binding.optB.isChecked){
+                    model.updateAnswer(model.getQuesNo()!! , binding.optB.text.toString())
+                }
+                if(binding.optC.isChecked){
+                    model.updateAnswer(model.getQuesNo()!! , binding.optC.text.toString())
+                }
+                if(binding.optD.isChecked){
+                    model.updateAnswer(model.getQuesNo()!! , binding.optD.text.toString())
+                }
 
                 // calculate score & show result
 
@@ -290,6 +318,7 @@ class QuestionActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
+//        Toast.makeText(this, "start", Toast.LENGTH_SHORT).show()
         binding.btnNext.setOnClickListener {
             nextQ(quiz)
         }
@@ -298,9 +327,9 @@ class QuestionActivity : AppCompatActivity() {
             prevQ(quiz)
         }
 
-        if(model.getMinute() >= 0){
-            timer.start()
-        }
+//        if(model.getMinute() >= 0){
+//            timer.start()
+//        }
 
         binding.btnClear.setOnClickListener {
             model.updateAnswer(model.getQuesNo()!! , "Not Answered")
