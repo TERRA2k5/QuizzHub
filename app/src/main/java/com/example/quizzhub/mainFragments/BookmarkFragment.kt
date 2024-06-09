@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LifecycleObserver
@@ -29,7 +30,6 @@ import kotlinx.coroutines.launch
 class BookmarkFragment : Fragment() {
 
     lateinit var binding: FragmentBookmarkBinding
-    private lateinit var bookmarkViewModel: BookmarkViewModel
     private lateinit var bookmarkAdapter: BookmarkAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,7 +39,7 @@ class BookmarkFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater , R.layout.fragment_bookmark , container , false)
 
         binding.bookRecycler.layoutManager = LinearLayoutManager(context , LinearLayoutManager.VERTICAL , false)
-
+        binding.pngNoData.visibility = View.GONE
         val repository = BookmarkRepository(QuizDatabase.getDatabase(requireContext()))
         val factory = activity?.let { BookmarkViewModelFactory(it.application , repository) }
         val bookmarkViewModel: BookmarkViewModel by viewModels { factory!! }

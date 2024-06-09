@@ -99,15 +99,15 @@ class HomeFragment : Fragment() {
 
             GlobalScope.launch(Dispatchers.IO) {
                 val prompt =
-                    "Make 10 MCQ on topic $topic in JSON format under list named 'quiz' and give 4 options under list named 'options' and also provide 'correctAnswer' for each.(carefully use quotation mark in key value pair.)"
+                    "Make 10 MCQ on topic $topic in JSON format under list named 'quiz' and give 4 options under list named 'options' and also provide 'correctAnswer' for each.(carefully use quotation mark in key value pair.)  DO NOT USE WORD JSON AT BEGINNING"
                 val response = generativeModel.generateContent(prompt)
                 val response1 = response.text.toString().replace("```", "")
-                val res = response1.replace("json", "")
-                val response2 = res.replace("JSON", "")
-                Log.i("TAGY1", response2)
+//                val res = response1.replace("json", "")
+//                val response2 = res.replace("JSON", "")
+                Log.i("TAGY1", response1)
 
                 val i = Intent(context, QuestionActivity::class.java)
-                i.putExtra("quiz", response2)
+                i.putExtra("quiz", response1)
                 i.putExtra("time", time)
                 startActivity(i)
                 activity?.finish()

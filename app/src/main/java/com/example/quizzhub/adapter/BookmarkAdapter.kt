@@ -6,8 +6,11 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.quizzhub.R
+import com.example.quizzhub.mainFragments.BookmarkFragment
 import com.example.quizzhub.model.BookmarkViewModel
 import com.example.quizzhub.model.SavedQuestion
 
@@ -32,15 +35,6 @@ class BookmarkAdapter(private val viewModel: BookmarkViewModel): RecyclerView.Ad
         var quesTitle: TextView = item.findViewById(R.id.tvQuestionCardBook)
         var correctAns: TextView = item.findViewById(R.id.tvCorrectAnsBook)
         var checkBox: CheckBox = item.findViewById(R.id.BookCheck)
-
-        init {
-
-            quesNo = item.findViewById(R.id.tvQuesNoCardBook)
-            quesTitle = item.findViewById(R.id.tvQuestionCardBook)
-            correctAns = item.findViewById(R.id.tvCorrectAnsBook)
-            checkBox = item.findViewById(R.id.BookCheck)
-
-        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -59,11 +53,10 @@ class BookmarkAdapter(private val viewModel: BookmarkViewModel): RecyclerView.Ad
         holder.itemView.setOnClickListener(){
             mListerner.onClick(position)
         }
-
         val item = bookmarks[position]
 
         holder.correctAns.text = item.correctAnswer
-        holder.quesNo.text = (1+position).toString()
+        holder.quesNo.text = ""
         holder.quesTitle.text = item.question
 
         holder.checkBox.isChecked = true
@@ -79,8 +72,10 @@ class BookmarkAdapter(private val viewModel: BookmarkViewModel): RecyclerView.Ad
         }
     }
 
-    internal fun setBookmarks(bookmarks: List<SavedQuestion>) {
-        this.bookmarks = bookmarks
-        notifyDataSetChanged()
+    internal fun setBookmarks(newBookmarks: List<SavedQuestion>) {
+        val diffCallback = DiffUtil_Callback(bookmarks, newBookmarks)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        bookmarks = newBookmarks
+        diffResult.dispatchUpdatesTo(this)
     }
 }
