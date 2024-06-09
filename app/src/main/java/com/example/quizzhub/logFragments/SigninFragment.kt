@@ -94,6 +94,7 @@ class SigninFragment : Fragment() {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     val user = auth.currentUser
+
                     Toast.makeText(
                         context,
                         "Logged in as ${user?.displayName.toString()} ",

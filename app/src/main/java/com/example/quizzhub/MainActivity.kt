@@ -8,11 +8,17 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
+import com.example.quizzhub.database.BookmarkRepository
+import com.example.quizzhub.database.QuizDatabase
+import com.example.quizzhub.model.BookmarkViewModel
+import com.example.quizzhub.model.BookmarkViewModelFactory
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -32,17 +38,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         drawerLayout = findViewById<DrawerLayout>(R.id.drawerLayout)
         navView = findViewById(R.id.navView)
-
-        if(auth.currentUser != null){
-            navView.menu.findItem(R.id.log).setTitle("LogOut")
-            navView.menu.findItem(R.id.log).setIcon(R.drawable.baseline_logout_24)
-
-//            val display = findViewById<TextView>(R.id.tvDisplay)
-//            auth = Firebase.auth
-//            if (auth.currentUser?.displayName != null) {
-//                display.setText(auth.currentUser?.displayName.toString())
-//            }
-        }
 
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
@@ -92,5 +87,20 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         }
         return true
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if(auth.currentUser != null){
+            navView.menu.findItem(R.id.log).setTitle("LogOut")
+            navView.menu.findItem(R.id.log).setIcon(R.drawable.baseline_logout_24)
+
+            val repository = BookmarkRepository(QuizDatabase.getDatabase(this))
+            val factory = BookmarkViewModelFactory(application , repository)
+            val bookmarkViewModel: BookmarkViewModel by viewModels { factory!! }
+
+            bookmarkViewModel.syncWithFirestore()
+
+        }
     }
 }

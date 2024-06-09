@@ -75,7 +75,7 @@ class DetailActivity : AppCompatActivity() {
 
         binding.checkbox.setOnCheckedChangeListener{ checkbox , isChecked->
             if(isChecked){
-                val addItem = SavedQuestion(question = question , correctAnswer = correctAns , explain = response)
+                val addItem = SavedQuestion(id = quesNo.hashCode() , question = question , correctAnswer = correctAns , explain = response )
                 bookmarkViewModel.insert(addItem)
             }
         }
