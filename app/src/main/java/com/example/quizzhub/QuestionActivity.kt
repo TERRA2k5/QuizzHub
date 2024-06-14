@@ -84,6 +84,7 @@ class QuestionActivity : AppCompatActivity() {
                 timer.start()
             }
         }catch (e: Exception){
+            Log.e("Generation" , "Un-identified object in response", e)
             Toast.makeText(this, "Something went wrong.\nTry Again.", Toast.LENGTH_SHORT).show()
             finishAffinity()
             startActivity(Intent(this, MainActivity::class.java))
@@ -144,6 +145,21 @@ class QuestionActivity : AppCompatActivity() {
     }
 
     fun nextQ(quiz: Quiz){
+
+        // setting answer
+        if(binding.optA.isChecked){
+            model.updateAnswer(model.getQuesNo()!! , binding.optA.text.toString())
+        }
+        if(binding.optB.isChecked){
+            model.updateAnswer(model.getQuesNo()!! , binding.optB.text.toString())
+        }
+        if(binding.optC.isChecked){
+            model.updateAnswer(model.getQuesNo()!! , binding.optC.text.toString())
+        }
+        if(binding.optD.isChecked){
+            model.updateAnswer(model.getQuesNo()!! , binding.optD.text.toString())
+        }
+
         if(model.getQuesNo()!! == 9){
 
             calculateScore()
@@ -161,19 +177,6 @@ class QuestionActivity : AppCompatActivity() {
         }
         binding.btnPrev.isEnabled = true
 
-        // setting answer
-        if(binding.optA.isChecked){
-            model.updateAnswer(model.getQuesNo()!! , binding.optA.text.toString())
-        }
-        if(binding.optB.isChecked){
-            model.updateAnswer(model.getQuesNo()!! , binding.optB.text.toString())
-        }
-        if(binding.optC.isChecked){
-            model.updateAnswer(model.getQuesNo()!! , binding.optC.text.toString())
-        }
-        if(binding.optD.isChecked){
-            model.updateAnswer(model.getQuesNo()!! , binding.optD.text.toString())
-        }
 
         if(model.getQuesNo()!! == 9) return
 
@@ -275,43 +278,43 @@ class QuestionActivity : AppCompatActivity() {
 
         if(model.getAnswer(0) == quiz.quiz.get(0).correctAnswer){
             model.increaseScore()
-            model.updateAnswer(0, "1")
+//            model.updateAnswer(0, "1")
         }
         if(model.getAnswer(1) == quiz.quiz.get(1).correctAnswer){
             model.increaseScore()
-            model.updateAnswer(1, "1")
+//            model.updateAnswer(1, "1")
         }
         if(model.getAnswer(2) == quiz.quiz.get(2).correctAnswer){
             model.increaseScore()
-            model.updateAnswer(2, "1")
+//            model.updateAnswer(2, "1")
         }
         if(model.getAnswer(3) == quiz.quiz.get(3).correctAnswer){
             model.increaseScore()
-            model.updateAnswer(3, "1")
+//            model.updateAnswer(3, "1")
         }
         if(model.getAnswer(4) == quiz.quiz.get(4).correctAnswer){
             model.increaseScore()
-            model.updateAnswer(4, "1")
+//            model.updateAnswer(4, "1")
         }
         if(model.getAnswer(5) == quiz.quiz.get(5).correctAnswer){
             model.increaseScore()
-            model.updateAnswer(5, "1")
+//            model.updateAnswer(5, "1")
         }
         if(model.getAnswer(6) == quiz.quiz.get(6).correctAnswer){
             model.increaseScore()
-            model.updateAnswer(6, "1")
+//            model.updateAnswer(6, "1")
         }
         if(model.getAnswer(7) == quiz.quiz.get(7).correctAnswer){
             model.increaseScore()
-            model.updateAnswer(7, "1")
+//            model.updateAnswer(7, "1")
         }
         if(model.getAnswer(8) == quiz.quiz.get(8).correctAnswer){
             model.increaseScore()
-            model.updateAnswer(8, "1")
+//            model.updateAnswer(8, "1")
         }
         if(model.getAnswer(9) == quiz.quiz.get(9).correctAnswer){
             model.increaseScore()
-            model.updateAnswer(9, "1")
+//            model.updateAnswer(9, "1")
         }
     }
 

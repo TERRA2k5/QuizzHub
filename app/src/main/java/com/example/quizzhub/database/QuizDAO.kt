@@ -19,4 +19,10 @@ interface QuizDAO {
     @Query("SELECT * FROM saved ORDER BY id ASC")
     fun getAllBookmarks(): LiveData<List<SavedQuestion>>
 
+    @Query("DELETE FROM saved")
+    suspend fun deleteAll()
+
+    @Query("SELECT * FROM saved")
+    suspend fun getAllBookmarksList(): List<SavedQuestion>
+
 }

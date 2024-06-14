@@ -103,7 +103,7 @@
 
         <RadioGroup
             android:id="@+id/radioOptions"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintBottom_toTopOf="@+id/btnClear"
@@ -112,25 +112,25 @@
 
             <RadioButton
                 android:id="@+id/optA"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Option A" />
 
             <RadioButton
                 android:id="@+id/optB"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Option B" />
 
             <RadioButton
                 android:id="@+id/optC"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Option C" />
 
             <RadioButton
                 android:id="@+id/optD"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Option D" />
         </RadioGroup>

@@ -10,13 +10,33 @@
         android:layout_height="match_parent"
         tools:context=".DetailActivity">
 
+        <View
+            android:id="@+id/space"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="@color/dark_blue"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/back_press"
+            android:layout_width="30dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginBottom="10dp"
+            android:clickable="true"
+            android:src="@drawable/baseline_arrow_back_24"
+            app:layout_constraintBottom_toBottomOf="@+id/space"
+            app:layout_constraintStart_toStartOf="parent" />
+
 
         <CheckBox
             android:id="@+id/checkbox"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:button="@null"
             android:background="@drawable/bookmark_icon"
+            android:button="@null"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tvQues" />
 
@@ -24,12 +44,12 @@
             android:id="@+id/tvQuesNo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="28dp"
             android:padding="5dp"
             android:text="Q1."
             android:textSize="28sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/space" />
 
         <TextView
             android:id="@+id/tvQues"
@@ -111,12 +131,12 @@
             tools:layout_editor_absoluteX="5dp">
 
             <TextView
-                android:layout_marginLeft="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
                 android:padding="5dp"
-                android:textColor="@color/white"
                 android:text="Explaination :"
+                android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -125,9 +145,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
-                android:textColor="@color/white"
                 android:text="response"
                 android:textAlignment="center"
+                android:textColor="@color/white"
                 android:textSize="15sp" />
         </LinearLayout>
 

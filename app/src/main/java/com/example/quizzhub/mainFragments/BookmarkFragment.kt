@@ -49,6 +49,7 @@ class BookmarkFragment : Fragment() {
         binding.bookRecycler.adapter = bookmarkAdapter
 
         bookmarkViewModel.allBookmarks.observe( viewLifecycleOwner , Observer { bookmarks ->
+            if(bookmarks.size == 0) binding.pngNoData.visibility = View.VISIBLE
             bookmarks?.let { bookmarkAdapter.setBookmarks(it) }
         })
 

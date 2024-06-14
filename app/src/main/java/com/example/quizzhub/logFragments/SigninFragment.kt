@@ -10,10 +10,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.quizzhub.MainActivity
 import com.example.quizzhub.R
+import com.example.quizzhub.database.BookmarkRepository
+import com.example.quizzhub.database.QuizDatabase
 import com.example.quizzhub.databinding.FragmentSigninBinding
+import com.example.quizzhub.model.BookmarkViewModel
+import com.example.quizzhub.model.BookmarkViewModelFactory
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -89,12 +94,16 @@ class SigninFragment : Fragment() {
     }
 
     private fun signInPassEmail(email: String, password: String) {
+        val repository = BookmarkRepository(QuizDatabase.getDatabase(requireContext()))
+        val factory = activity?.let { BookmarkViewModelFactory(it.application , repository) }
+        val bookmarkViewModel: BookmarkViewModel by viewModels { factory!! }
+
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     val user = auth.currentUser
-
+                    bookmarkViewModel.uploadAllToFirestore()
                     Toast.makeText(
                         context,
                         "Logged in as ${user?.displayName.toString()} ",
@@ -142,11 +151,15 @@ class SigninFragment : Fragment() {
     }
 
     private fun firebaseAuthWithGoogle(idToken: String) {
+        val repository = BookmarkRepository(QuizDatabase.getDatabase(requireContext()))
+        val factory = activity?.let { BookmarkViewModelFactory(it.application , repository) }
+        val bookmarkViewModel: BookmarkViewModel by viewModels { factory!! }
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential)
             .addOnCompleteListener() { task ->
                 if (task.isSuccessful) {
                     val user = auth.currentUser
+                    bookmarkViewModel.uploadAllToFirestore()
                     Toast.makeText(
                         context,
                         "Signed in as ${user?.displayName.toString()}",

@@ -14,6 +14,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.quizzhub.database.BookmarkRepository
 import com.example.quizzhub.database.QuizDatabase
@@ -29,6 +30,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var drawerLayout: DrawerLayout
     lateinit var navView:NavigationView
     private lateinit var auth: FirebaseAuth
+    lateinit var bookmarkViewModel: BookmarkViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,9 +38,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         auth = Firebase.auth
 
+
         drawerLayout = findViewById<DrawerLayout>(R.id.drawerLayout)
         navView = findViewById(R.id.navView)
-
+        val repository = BookmarkRepository(QuizDatabase.getDatabase(this))
+        val viewModelFactory = BookmarkViewModelFactory(application , repository)
+        bookmarkViewModel = ViewModelProvider(this, viewModelFactory)[BookmarkViewModel::class.java]
+        
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -65,6 +71,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
                 else{
                     auth.signOut()
+                    bookmarkViewModel.deleteAll()
                     navView.menu.findItem(R.id.log).setTitle("LogIn")
                     navView.menu.findItem(R.id.log).setIcon(R.drawable.baseline_login_24)
                 }

@@ -63,7 +63,7 @@ class AnalysisAdapter(val itemList: ArrayList<RecyclerModel>): RecyclerView.Adap
         holder.correctAns.text = itemList[position].correctAnswer
 
 
-        if(itemList[position].yourAns == "1"){
+        if(itemList[position].yourAns == itemList[position].correctAnswer){
             holder.yourAns.text = itemList[position].correctAnswer
             holder.status.setImageResource(R.drawable.tick_icon)
         }

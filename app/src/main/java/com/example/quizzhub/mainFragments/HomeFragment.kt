@@ -27,6 +27,7 @@ import kotlinx.coroutines.launch
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
+    var response: String? = null
 
     var time: Int = 0
     override fun onCreateView(
@@ -97,14 +98,23 @@ class HomeFragment : Fragment() {
                 apiKey = "AIzaSyB6qGuM47R6uiLIdfL0dJ4XdSOCE6OvNwc"
             )
 
+
             GlobalScope.launch(Dispatchers.IO) {
-                val prompt =
-                    "Make 10 MCQ on topic $topic in JSON format under list named 'quiz' and give 4 options under list named 'options' and also provide 'correctAnswer' for each.(carefully use quotation mark in key value pair.)  DO NOT USE WORD JSON AT BEGINNING"
-                val response = generativeModel.generateContent(prompt)
-                val response1 = response.text.toString().replace("```", "")
+                try {
+                    var prompt =
+                        "Make 10 MCQ on topic $topic in JSON format under list named 'quiz' and give 4 options under list named 'options' and also provide 'correctAnswer' for each.(carefully use quotation mark in key value pair.)  DO NOT USE WORD JSON AT BEGINNING"
+                    if(topic == ""){
+                        prompt = "Make 10 MCQ on random topic in JSON format under list named 'quiz' and give 4 options under list named 'options' and also provide 'correctAnswer' for each.(carefully use quotation mark in key value pair.)  DO NOT USE WORD JSON AT BEGINNING"
+                    }
+                    response = generativeModel.generateContent(prompt).text.toString()
+                } catch (e: Exception) {
+                    Log.e("Generation", "Could not generate quiz")
+//                Toast.makeText(context, "Check Your Network Connection", Toast.LENGTH_SHORT).show()
+                }
+                val response1 = response.toString().replace("```", "")
 //                val res = response1.replace("json", "")
 //                val response2 = res.replace("JSON", "")
-                Log.i("TAGY1", response1)
+                Log.i("TAGY", response1)
 
                 val i = Intent(context, QuestionActivity::class.java)
                 i.putExtra("quiz", response1)
@@ -112,6 +122,7 @@ class HomeFragment : Fragment() {
                 startActivity(i)
                 activity?.finish()
             }
+
 
         }
 

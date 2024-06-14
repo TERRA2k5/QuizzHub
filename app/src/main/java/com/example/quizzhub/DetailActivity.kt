@@ -48,6 +48,10 @@ class DetailActivity : AppCompatActivity() {
         binding.tvResponse.text = response.toString()
         binding.tvQuesNo.setText(quesNo.toString())
 
+        binding.backPress.setOnClickListener{
+            onBackPressed()
+        }
+
         if (path == "analyse"){
             val yourAns = getData?.get("answer").toString()
 

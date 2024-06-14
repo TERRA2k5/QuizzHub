@@ -95,6 +95,14 @@ class AnalyseActivity : AppCompatActivity() {
         })
     }
 
+    override fun onStart() {
+        super.onStart()
+
+        binding.backPress.setOnClickListener{
+            onBackPressed()
+        }
+    }
+
     override fun onPause() {
         super.onPause()
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);

@@ -13,4 +13,13 @@ class BookmarkRepository(private val bookmarkDao: QuizDatabase) {
     suspend fun delete(bookmark: SavedQuestion) {
         bookmarkDao.quesDAO().delete(bookmark)
     }
+
+    suspend fun deleteAll() {
+        bookmarkDao.quesDAO().deleteAll()
+    }
+
+    suspend fun getAllBookmarksList(): List<SavedQuestion> {
+        return bookmarkDao.quesDAO().getAllBookmarksList()
+    }
+
 }

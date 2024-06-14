@@ -55,6 +55,26 @@ class BookmarkViewModel(private val application: Application, private val reposi
             Log.e("BookmarkViewModel", "Error deleting bookmark", e)
         }
     }
+
+    fun deleteAll() = viewModelScope.launch {
+        try {
+            repository.deleteAll()
+        } catch (e: Exception) {
+            Log.e("BookmarkViewModel", "Error deleting all bookmarks", e)
+        }
+    }
+
+    fun uploadAllToFirestore() = viewModelScope.launch {
+        try {
+            val bookmarks = repository.getAllBookmarksList()
+            bookmarks.forEach { bookmark ->
+                firestoreRepository.addBookmark(bookmark)
+            }
+            Log.d("BookmarkViewModel", "Uploaded ${bookmarks.size} bookmarks to Firestore")
+        } catch (e: Exception) {
+            Log.e("BookmarkViewModel", "Error uploading bookmarks to Firestore", e)
+        }
+    }
 }
 
 

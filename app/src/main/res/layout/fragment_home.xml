@@ -67,6 +67,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="Submit empty for random Quiz."
+            app:layout_constraintStart_toStartOf="@+id/et_topic"
+            app:layout_constraintTop_toBottomOf="@+id/et_topic" />
+
         <Button
             android:id="@+id/btnGenerate"
             android:layout_width="121dp"
