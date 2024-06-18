@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
@@ -21,6 +22,7 @@ import com.example.quizzhub.model.BookmarkViewModel
 import com.example.quizzhub.model.BookmarkViewModelFactory
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.auth
 import com.google.firebase.auth.userProfileChangeRequest
 import java.util.regex.Matcher
@@ -38,14 +40,18 @@ class SignupFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_signup, container, false)
-
+        binding.progress.visibility = View.GONE
         binding.buttonUp.setOnClickListener {
+            val name = binding.etName.text.toString()
             val email = binding.etEmail.text.toString()
             val password = binding.etPassword.text.toString()
             val conPassword = binding.etConPassword.text.toString()
 
             if (emailValidator(email)) {
                 if (password == conPassword) {
+                    if(name == ""){
+                        binding.namebox.error = "Required"
+                    }
                     if (password == "") {
                         binding.passbox.error = "Required"
                     }
@@ -54,7 +60,7 @@ class SignupFragment : Fragment() {
                     }
                     if (email != "" && password != "") {
                         if (password.length >= 8) {
-                            newUser(email, password)
+                            newUser(email, password , name)
                         } else {
                             binding.passbox.error = "Minimum 8 character"
                         }
@@ -73,8 +79,10 @@ class SignupFragment : Fragment() {
     }
 
 
-    private fun newUser(email: String, password: String) {
+    private fun newUser(email: String, password: String , name: String) {
 
+        binding.progress.visibility = View.VISIBLE
+        binding.buttonUp.isEnabled = false
         val repository = BookmarkRepository(QuizDatabase.getDatabase(requireContext()))
         val factory = activity?.let { BookmarkViewModelFactory(it.application , repository) }
         val bookmarkViewModel: BookmarkViewModel by viewModels { factory!! }
@@ -86,11 +94,23 @@ class SignupFragment : Fragment() {
                     Log.d(TAG, "createUserWithEmail:success")
                     val user = auth.currentUser
                     bookmarkViewModel.uploadAllToFirestore()
-//                    userProfileChangeRequest {
-//                        displayName = binding.etName.text.toString()
-//                    }
-                    startActivity(Intent(context, MainActivity::class.java))
-                    activity?.finish()
+                    val profileUpdates = UserProfileChangeRequest.Builder()
+                        .setDisplayName(name)
+                        .build()
+                    user?.updateProfile(profileUpdates)?.addOnCompleteListener {
+                        if(it.isSuccessful){
+                            activity?.finishAffinity()
+                            startActivity(Intent(context, MainActivity::class.java))
+                            activity?.finish()
+                            binding.progress.visibility = View.GONE
+                            binding.buttonUp.isEnabled = true
+                            Toast.makeText(context, "Signed in as ${auth.currentUser?.displayName}", Toast.LENGTH_SHORT).show()
+                        }
+                        else{
+                            binding.buttonUp.isEnabled = true
+                            Toast.makeText(context, "Authentication Failed", Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)

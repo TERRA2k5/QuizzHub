@@ -23,7 +23,7 @@ class ResultActivity : AppCompatActivity() {
     private var answers: ArrayList<String>? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+//        enableEdgeToEdge()
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_result)
 

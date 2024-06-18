@@ -38,7 +38,6 @@ class QuestionActivity : AppCompatActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         binding = DataBindingUtil.setContentView(this , R.layout.activity_question)
 
 //        Toast.makeText(this, "create", Toast.LENGTH_SHORT).show()

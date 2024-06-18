@@ -8,6 +8,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
@@ -34,6 +35,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+//        enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
         auth = Firebase.auth
@@ -44,7 +46,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val repository = BookmarkRepository(QuizDatabase.getDatabase(this))
         val viewModelFactory = BookmarkViewModelFactory(application , repository)
         bookmarkViewModel = ViewModelProvider(this, viewModelFactory)[BookmarkViewModel::class.java]
-        
+
+        if(auth.currentUser != null){
+            val header: View = navView.getHeaderView(0)
+
+            header.findViewById<TextView>(R.id.tvName).text = auth.currentUser?.displayName.toString()
+        }
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -74,6 +81,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     bookmarkViewModel.deleteAll()
                     navView.menu.findItem(R.id.log).setTitle("LogIn")
                     navView.menu.findItem(R.id.log).setIcon(R.drawable.baseline_login_24)
+
+                    val header: View = navView.getHeaderView(0)
+
+                    header.findViewById<TextView>(R.id.tvName).text = " "
                 }
                 drawerLayout.closeDrawer(GravityCompat.START)
             }

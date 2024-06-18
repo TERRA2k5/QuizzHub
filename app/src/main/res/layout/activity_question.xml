@@ -13,7 +13,7 @@
         <ImageView
             android:id="@+id/imageView5"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="50dp"
             android:src="@drawable/home_shape"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -79,11 +79,12 @@
 
         <TextView
             android:id="@+id/tvQuesNo"
-            android:layout_width="62dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:layout_marginTop="80dp"
-            android:text="Q1."
+            android:layout_marginTop="85dp"
+            android:text="1"
+            android:padding="10dp"
             android:textSize="28sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView5" />
@@ -96,6 +97,7 @@
             android:padding="10dp"
             android:text="QUESTION"
             android:textSize="28sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tvQuesNo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/tvQuesNo"

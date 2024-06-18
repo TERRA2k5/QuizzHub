@@ -1,5 +1,6 @@
 package com.example.quizzhub
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -28,7 +29,6 @@ class DetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_detail)
 
@@ -52,21 +52,31 @@ class DetailActivity : AppCompatActivity() {
             onBackPressed()
         }
 
+        if (response == "null"){
+            onBackPressed()
+            Toast.makeText(this, "Check Your Internet Connection", Toast.LENGTH_SHORT).show()
+        }
+
         if (path == "analyse"){
             val yourAns = getData?.get("answer").toString()
 
-            val response1 =response.replace("**", " ")
-            val response2 =response1.replace("```", " ")
-            if(yourAns != "1"){
+            try{
+                val response1 = response.replace("**", " ")
+                response = response1.replace("```", " ")
+            }catch (e: Exception){
+                finishAffinity()
+                startActivity(Intent(this, AnalyseActivity::class.java))
+                finish()
+                Toast.makeText(this, "Check Your Internet Connection", Toast.LENGTH_SHORT).show()
+
+            }
+            if(yourAns != correctAns){
                 binding.tvYourAns.setText(yourAns)
             }
             else{
                 binding.tvYourAns.setText(correctAns)
             }
-            binding.tvResponse.setText(response2)
-
-            response = response2
-
+            binding.tvResponse.setText(response)
         }
         else{
             binding.checkbox.isChecked = true

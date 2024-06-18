@@ -2,6 +2,7 @@ package com.example.quizzhub
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import androidx.activity.enableEdgeToEdge
@@ -26,10 +27,10 @@ class AnalyseActivity : AppCompatActivity() {
     lateinit var quiz: Quiz
     lateinit var binding: ActivityAnalyseBinding
     private lateinit var model: QuesViewModel
+    var explaination: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_analyse)
 
         model = ViewModelProvider(this).get(QuesViewModel::class.java)
@@ -67,7 +68,6 @@ class AnalyseActivity : AppCompatActivity() {
         adapter.setOnClickListener(object : AnalysisAdapter.onClickListener{
             override fun onClick(position: Int) {
 
-//                Toast.makeText(this@AnalyseActivity, "touchhh", Toast.LENGTH_SHORT).show()
                 binding.analyseLoading.visibility = View.VISIBLE
                 getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
@@ -80,16 +80,22 @@ class AnalyseActivity : AppCompatActivity() {
                 )
 
                 GlobalScope.launch(Dispatchers.IO) {
-                    val prompt = quiz.quiz[position].question + " (Explain why correct answer must be ${quiz.quiz[position].correctAnswer} in 50-100 words.)"
-                    val response = generativeModel.generateContent(prompt).text.toString()
+                    try{
+                        val prompt =
+                            quiz.quiz[position].question + " (Explain why correct answer must be ${quiz.quiz[position].correctAnswer} in 50-100 words.)"
+                        explaination = generativeModel.generateContent(prompt).text.toString()
+                    }catch (e: Exception){
+                        Log.e("Generation" , "No Internet" , e)
+                    }
                     val intent = Intent(this@AnalyseActivity , DetailActivity::class.java)
                     intent.putExtra("question", quiz.quiz.get(position).question)
                     intent.putExtra("correct", quiz.quiz.get(position).correctAnswer)
                     intent.putExtra("answer", answers[position])
-                    intent.putExtra("response",response)
+                    intent.putExtra("response",explaination)
                     intent.putExtra("path","analyse")
                     intent.putExtra("number",(position+1).toString())
                     startActivity(intent)
+                    explaination = null
                 }
             }
         })
