@@ -7,14 +7,14 @@
     <string name="profile">Profile</string>
     <string name="home">Home</string>
     <string name="bookmarks">BookMarks</string>
-    <string name="your_web_client_id">926263435025-stlbn41ul1tiiop0vb50dr62soqmst4a.apps.googleusercontent.com</string>
+    <string name="your_web_client_id">5456477055-otgubh9lahhmj7o8qjvu78ed2gkblgmk.apps.googleusercontent.com</string>
 
 
     <string-array name="timer">
-        <item>2</item>
-        <item>5</item>
-        <item>10</item>
-        <item>15</item>
-        <item>30</item>
+        <item>2 min</item>
+        <item>5 min</item>
+        <item>10 min</item>
+        <item>15 min</item>
+        <item>30 min</item>
     </string-array>
 </resources>

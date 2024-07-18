@@ -78,6 +78,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
                 else{
                     auth.signOut()
+                    Toast.makeText(this, "Signed Out", Toast.LENGTH_SHORT).show()
                     bookmarkViewModel.deleteAll()
                     navView.menu.findItem(R.id.log).setTitle("LogIn")
                     navView.menu.findItem(R.id.log).setIcon(R.drawable.baseline_login_24)

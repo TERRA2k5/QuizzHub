@@ -17,6 +17,7 @@ import com.example.quizzhub.R
 import com.example.quizzhub.ResultActivity
 import com.example.quizzhub.databinding.FragmentHomeBinding
 import com.google.ai.client.generativeai.GenerativeModel
+import com.google.ai.client.generativeai.type.generationConfig
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
@@ -68,11 +69,11 @@ class HomeFragment : Fragment() {
             ) {
                 val prompt = timer[position].toString()
                 when (prompt) {
-                    "2" -> time = 2
-                    "5" -> time = 5
-                    "10" -> time = 10
-                    "15" -> time = 15
-                    "30" -> time = 30
+                    "2 min" -> time = 2
+                    "5 min" -> time = 5
+                    "10 min" -> time = 10
+                    "15 min" -> time = 15
+                    "30 min" -> time = 30
                 }
             }
 
@@ -91,12 +92,15 @@ class HomeFragment : Fragment() {
             binding.progressBar.visibility = View.VISIBLE
             val topic = binding.etTopic.text.toString()
 
+
             val generativeModel = GenerativeModel(
                 // For text-only input, use the gemini-pro model
                 modelName = "gemini-pro",
                 // Access your API key as a Build Configuration variable (see "Set up your API key" above)
-                apiKey = "AIzaSyB6qGuM47R6uiLIdfL0dJ4XdSOCE6OvNwc"
+                apiKey = "AIzaSyBtnEUCexEGK6w_PWxZPxkqPRsGOntO1bM",
             )
+//            GlobalScope.launch(Dispatchers.IO) { val ss = generativeModel.generateContent("hello ? ").text.toString()
+//            Log.i("hahah" , ss)}
 
 
             GlobalScope.launch(Dispatchers.IO) {

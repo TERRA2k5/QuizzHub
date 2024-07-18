@@ -61,7 +61,7 @@ class QuestionActivity : AppCompatActivity() {
         }
 
 
-        Log.d("Tagyy" , model.getMinute().toString())
+        Log.d("Timer" , model.getMinute().toString())
 
         // generating response
         try {

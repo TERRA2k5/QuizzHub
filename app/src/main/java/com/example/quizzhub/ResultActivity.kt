@@ -42,8 +42,15 @@ class ResultActivity : AppCompatActivity() {
             binding.ResTime.visibility = View.GONE
         }
         else{
-            binding.ResMin.setText(minLeft.toString())
-            binding.ResSec.setText(secLeft.toString())
+            if(minLeft < 10){
+                binding.ResMin.setText("0"+minLeft.toString())
+            }
+            else binding.ResMin.setText(minLeft.toString())
+
+            if(secLeft<10){
+                binding.ResSec.setText("0"+secLeft.toString())
+            }
+            else binding.ResSec.setText(secLeft.toString())
         }
 
         val incorrectAnswers = 10 - score
@@ -68,7 +75,7 @@ class ResultActivity : AppCompatActivity() {
         // Configure the pie chart
         binding.pieChart.data = data
         binding.pieChart.setUsePercentValues(true)
-        binding.pieChart.description = Description().apply { text = "Results" }
+        binding.pieChart.description = Description().apply { text = " " }
         binding.pieChart.description.textColor = Color.WHITE
         binding.pieChart.isDrawHoleEnabled = true
         binding.pieChart.holeRadius = 50f

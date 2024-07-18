@@ -59,11 +59,12 @@
             android:id="@+id/et_topic"
             android:layout_width="242dp"
             android:layout_height="50dp"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="148dp"
             android:hint="Enter your Topic ...."
             android:isScrollContainer="true"
             android:paddingLeft="5dp"
+            app:layout_constraintEnd_toStartOf="@+id/btnGenerate"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
@@ -77,19 +78,20 @@
 
         <Button
             android:id="@+id/btnGenerate"
-            android:layout_width="121dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/btn_bg"
             android:text="Generate"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="@+id/et_topic"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/et_topic"
             app:layout_constraintTop_toTopOf="@+id/et_topic" />
 
         <Spinner
             android:id="@+id/spiner_timer"
-            android:layout_width="100dp"
+            android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_marginStart="52dp"
             android:clickable="false"

@@ -1,26 +1,44 @@
 {
   "project_info": {
-    "project_number": "926263435025",
-    "project_id": "quizzhub-63cdc",
-    "storage_bucket": "quizzhub-63cdc.appspot.com"
+    "project_number": "5456477055",
+    "project_id": "quizzhub-cf0bb",
+    "storage_bucket": "quizzhub-cf0bb.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:926263435025:android:98ef8075ae26ee418b76b0",
+        "mobilesdk_app_id": "1:5456477055:android:c69d6fdb23bb01b556784a",
         "android_client_info": {
           "package_name": "com.example.quizzhub"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "5456477055-egmr6ngat1net1jm60shdrqblqgdv383.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.quizzhub",
+            "certificate_hash": "b5db2ffbea5aa66407849d47cb8ee9b0d4723ea7"
+          }
+        },
+        {
+          "client_id": "5456477055-otgubh9lahhmj7o8qjvu78ed2gkblgmk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyAaTlw1xjanj876pp5F-oJH82Ew67DaFws"
+          "current_key": "AIzaSyDlNmEgG5gOmLK3iyFCOwPP0PoMmWhFjEs"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "5456477055-otgubh9lahhmj7o8qjvu78ed2gkblgmk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

@@ -76,7 +76,7 @@ class AnalyseActivity : AppCompatActivity() {
                     // For text-only input, use the gemini-pro model
                     modelName = "gemini-pro",
                     // Access your API key as a Build Configuration variable (see "Set up your API key" above)
-                    apiKey = "AIzaSyB6qGuM47R6uiLIdfL0dJ4XdSOCE6OvNwc"
+                    apiKey = "AIzaSyBtnEUCexEGK6w_PWxZPxkqPRsGOntO1bM"
                 )
 
                 GlobalScope.launch(Dispatchers.IO) {
